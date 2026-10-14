@@ -24,8 +24,8 @@ jobs:
       
       - name: Configure Git
         run: |
-          git config --global user.name "opencode-agent"
-          git config --global user.email "agent@opencode.local"
+          git config --global user.name "phaladamou"
+          git config --global user.email "phaladrien@gmail.com"
       
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
