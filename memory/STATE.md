@@ -1,16 +1,16 @@
 # STATE.md — État actuel du projet
 
 ## Dernière mise à jour
-(Date et heure.)
+2026-10-14.
 
 ## Tâche en cours
-(Décris la tâche actuellement en cours, ou "aucune".)
+test final
 
 ## Prochaine tâche
-(Décris la prochaine tâche à faire.)
+vérifier la mémoire
 
 ## Blocages
-(Liste des blocages, ou "aucun".)
+aucun
 
 ## Derniers commits notables
 - (Hash) — Message.
