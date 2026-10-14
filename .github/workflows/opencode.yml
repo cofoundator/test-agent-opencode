@@ -19,14 +19,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           persist-credentials: true
-      
+
       - name: Configure Git
         run: |
           git config --global user.name "phaladamou"
           git config --global user.email "phaladrien@gmail.com"
-      
+
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
         env:
@@ -35,3 +35,10 @@ jobs:
         with:
           model: opencode/mimo-v2.6-flash-free
           use_github_token: true
+
+      - name: Save Memory
+        if: always()
+        run: |
+          git add memory/ AGENTS.md
+          git diff --staged --quiet || git commit -m "chore(memory): update agent memory [skip ci]"
+          git push || true
