@@ -5,3 +5,4 @@
 
 ## Journal
 - (Date de création) — Initialisation du système de mémoire.
+- 2026-10-14 — Création de `test-final.md` — Fichier ajouté à la racine du dépôt.
