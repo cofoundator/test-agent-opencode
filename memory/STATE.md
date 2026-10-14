@@ -1,16 +1,16 @@
 # STATE.md — État actuel du projet
 
 ## Dernière mise à jour
-(Date et heure.)
+2026-10-14
 
 ## Tâche en cours
-(Décris la tâche actuellement en cours, ou "aucune".)
+Création de `test-final.md` à la racine du dépôt.
 
 ## Prochaine tâche
-(Décris la prochaine tâche à faire.)
+Aucune.
 
 ## Blocages
-(Liste des blocages, ou "aucun".)
+Aucun.
 
 ## Derniers commits notables
-- (Hash) — Message.
+- (à compléter après commit) — Add test-final.md.
