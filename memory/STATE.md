@@ -1,16 +1,16 @@
 # STATE.md — État actuel du projet
 
 ## Dernière mise à jour
-(Date et heure.)
+2026-10-14
 
 ## Tâche en cours
-(Décris la tâche actuellement en cours, ou "aucune".)
+Aucune.
 
 ## Prochaine tâche
-(Décris la prochaine tâche à faire.)
+Aucune.
 
 ## Blocages
-(Liste des blocages, ou "aucun".)
+Aucun.
 
 ## Derniers commits notables
-- (Hash) — Message.
+- a2ed750 — Add test-final.md.
