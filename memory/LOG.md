@@ -5,3 +5,4 @@
 
 ## Journal
 - (Date de création) — Initialisation du système de mémoire.
+- 2026-10-14 — Mise à jour de STATE.md — Tâche en cours : configuration de la mémoire longue terme ; prochaine tâche : créer les modules du projet.
