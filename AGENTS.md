@@ -22,3 +22,9 @@
 - Avant de coder : lire `memory/PROJECT.md` et `memory/STATE.md`.
 - Après avoir codé : mettre à jour `memory/STATE.md` et `memory/LOG.md`.
 - Un commit = un changement logique, testable, documenté.
+
+## Règle absolue — Communication
+- **Ne jamais écrire `/oc` ou `/opencode` dans tes réponses.**
+- Ces mots-clés déclenchent un nouveau workflow, ce qui crée une boucle infinie.
+- Si tu dois mentionner une commande, écris-la comme ceci : `slash-oc` ou `commande oc`.
+- Tes réponses doivent être descriptives, pas des commandes.
