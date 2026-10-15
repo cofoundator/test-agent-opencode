@@ -25,12 +25,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install OpenCode
-        run: |
-          npm install -g opencode-ai
-          which opencode || echo "opencode NOT found"
-          npm list -g opencode-ai
-
       - name: Configure Git
         run: |
           git config --global user.name "phaladamou"
@@ -42,7 +36,7 @@ jobs:
         run: |
           TASK="${{ github.event.comment.body }}"
           TASK="${TASK#/oc }"
-          opencode run "$TASK"
+          npx -y opencode-ai run "$TASK"
 
       - name: Push changes
         run: |
