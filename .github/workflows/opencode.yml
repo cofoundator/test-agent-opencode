@@ -4,6 +4,9 @@ on:
   issue_comment:
     types: [created]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   opencode:
     if: |
@@ -23,7 +26,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
+
+      - name: Install OpenCode
+        run: npm install -g opencode-ai
 
       - name: Configure Git
         run: |
@@ -36,7 +42,7 @@ jobs:
         run: |
           TASK="${{ github.event.comment.body }}"
           TASK="${TASK#/oc }"
-          npx -y opencode-ai run "$TASK"
+          opencode run "$TASK"
 
       - name: Push changes
         run: |
