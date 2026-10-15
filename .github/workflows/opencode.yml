@@ -33,9 +33,9 @@ jobs:
       - name: Run OpenCode
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
-          TASK="${{ github.event.comment.body }}"
-          TASK="${TASK#/oc }"
+          TASK="${COMMENT_BODY#/oc }"
           opencode run "$TASK"
 
       - name: Push changes
