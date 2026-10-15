@@ -1,13 +1,13 @@
 # STATE.md — État actuel du projet
 
 ## Dernière mise à jour
-(Date et heure.)
+2026-10-15
 
 ## Tâche en cours
-(Décris la tâche actuellement en cours, ou "aucune".)
+système de mémoire opérationnel
 
 ## Prochaine tâche
-(Décris la prochaine tâche à faire.)
+déployer sur les projets réels
 
 ## Blocages
 (Liste des blocages, ou "aucun".)
