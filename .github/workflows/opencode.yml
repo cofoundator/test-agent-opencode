@@ -12,20 +12,35 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
-      issues: write
     steps:
-      - name: Checkout repository
+      - name: Checkout agent branch
         uses: actions/checkout@v6
         with:
+          ref: agent/work
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Run OpenCode
-        uses: anomalyco/opencode/github@latest
+      - name: Install opencode-worktree
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/DanHenton/opencode-worktree/main/install.sh | sh
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "phaladamou"
+          git config --global user.email "phaladrien@gmail.com"
+
+      - name: Run OpenCode in worktree
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-        with:
-          model: opencode/mimo-v2.6-flash-free
-          use_github_token: true
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          TASK="${COMMENT_BODY#/oc }"
+          opencode-worktree task agent-work "$TASK" --no-merge
+
+      - name: Merge worktree and push
+        run: |
+          # Trouver le worktree créé
+          WORKTREE_PATH=$(opencode-worktree list | grep -o '/[^ ]*' | head -1)
+          cd "$WORKTREE_PATH"
+          opencode-worktree merge
+          git push origin agent/work
