@@ -11,14 +11,12 @@ jobs:
       github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: write
-      pull-requests: write
-      issues: write
     steps:
-      - name: Checkout repository
+      - name: Checkout agent branch
         uses: actions/checkout@v6
         with:
+          ref: agent/work
           fetch-depth: 0
           persist-credentials: true
 
@@ -27,18 +25,19 @@ jobs:
           git config --global user.name "phaladamou"
           git config --global user.email "phaladrien@gmail.com"
 
+      - name: Install OpenCode
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+
       - name: Run OpenCode
-        uses: anomalyco/opencode/github@latest
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-        with:
-          model: opencode/mimo-v2.6-flash-free
-          use_github_token: true
-
-      - name: Save Memory
-        if: always()
         run: |
-          git add memory/ AGENTS.md
-          git diff --staged --quiet || git commit -m "chore(memory): update agent memory [skip ci]"
-          git push || true
+          TASK="${{ github.event.comment.body }}"
+          TASK="${TASK#/oc }"
+          opencode run "$TASK"
+
+      - name: Push changes
+        run: |
+          git push origin agent/work
