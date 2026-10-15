@@ -35,3 +35,10 @@
 - **À la fin de chaque session**, mets à jour `memory/STATE.md` avec l'état actuel et la prochaine tâche.
 - **Ajoute une entrée** dans `memory/LOG.md` décrivant ce qui a été fait.
 - Fais-le **systématiquement**, même si on ne te le demande pas.
+## Règle — Git
+- Tu travailles **toujours** sur la branche `agent/work`. C'est ta branche principale.
+- Ne crée une nouvelle branche que si tu as besoin de **tester** quelque chose de risqué.
+- Si le test est concluant, merge la branche de test dans `agent/work` et supprime-la.
+- Si le test échoue, supprime la branche de test et reste sur `agent/work`.
+- Commit après chaque modification logique. Un commit = un changement testable.
+- Ne jamais pousser sur `main`. `main` est réservé aux merges manuels.
