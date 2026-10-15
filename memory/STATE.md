@@ -4,13 +4,13 @@
 2026-10-15
 
 ## Tâche en cours
-validation de la mémoire automatique
+Test de branche : création de test-branche.md sur la branche courante
 
 ## Prochaine tâche
 déployer sur un vrai projet
 
 ## Blocages
-(Liste des blocages, ou "aucun".)
+aucun
 
 ## Derniers commits notables
-- (Hash) — Message.
+- 04019bc — Add test-branche.md to verify current branch.
