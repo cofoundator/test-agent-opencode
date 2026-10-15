@@ -28,3 +28,6 @@
 - Ces mots-clés déclenchent un nouveau workflow, ce qui crée une boucle infinie.
 - Si tu dois mentionner une commande, écris-la comme ceci : `slash-oc` ou `commande oc`.
 - Tes réponses doivent être descriptives, pas des commandes.
+## Règle absolue — Communication
+- **Ne jamais écrire `/oc` ou `/opencode` dans tes réponses.**
+- Si tu dois mentionner une commande, écris `slash-oc` ou `commande oc`.
