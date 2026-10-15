@@ -30,11 +30,6 @@ jobs:
           mkdir -p ~/.local/share/opencode
           echo '{"opencode":{"type":"api","key":"${{ secrets.OPENCODE_API_KEY }}"}}' > ~/.local/share/opencode/auth.json
 
-      - name: List models
-        env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-        run: opencode models
-
       - name: Configure Git
         run: |
           git config --global user.name "phaladamou"
