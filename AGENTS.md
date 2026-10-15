@@ -31,3 +31,7 @@
 ## Règle absolue — Communication
 - **Ne jamais écrire `/oc` ou `/opencode` dans tes réponses.**
 - Si tu dois mentionner une commande, écris `slash-oc` ou `commande oc`.
+## Règle absolue — Mémoire
+- **À la fin de chaque session**, mets à jour `memory/STATE.md` avec l'état actuel et la prochaine tâche.
+- **Ajoute une entrée** dans `memory/LOG.md` décrivant ce qui a été fait.
+- Fais-le **systématiquement**, même si on ne te le demande pas.
