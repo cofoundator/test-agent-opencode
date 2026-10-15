@@ -4,7 +4,7 @@
 2026-10-15
 
 ## Tâche en cours
-validation de la mémoire automatique
+aucune (fichier test5.md créé et commité)
 
 ## Prochaine tâche
 déployer sur un vrai projet
