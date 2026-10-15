@@ -1,0 +1,99 @@
+name: Issue Agent — gitclaw-style
+
+# gitclaw-style issue-driven agent (modeled on SawyerHood/gitclaw):
+#   - opening an issue starts an agent run
+#   - commenting on the issue resumes the SAME session (memory lives in
+#     state/issues/<N>.json committed to git)
+#   - the agent works on branch agent/issue-<N> → opens a PR
+#   - replies as an issue comment with a summary + PR link
+#   - multi-CLI launcher: pick the agent per issue with `runner: <cli>`
+#     anywhere in the issue title/body:
+#     cline | opencode | kilo | claude-code | codex | dsh
+#     (no marker → repo variable AGENT_BATCH_RUNNER, then cline)
+#     free vs BYOK: AGENT_BATCH_PROVIDER + matching *_API_KEY secret;
+#     each CLI authenticates natively — nothing re-routes anything else
+#   - optionally logs the run to the Hermes project-manager panel via the
+#     PM_PANEL_URL secret (skipped silently when unset)
+# Security: only repo OWNER / MEMBER / COLLABORATOR can trigger the agent
+# (same as gitclaw); bot comments never trigger. For private repos no extra
+# exposure. Drive-by issues from strangers get a friendly greeting instead
+# (see the greet job) so the demo never looks dead.
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  greet:
+    # Friendly auto-answer for issues opened by non-collaborators, so drive-by
+    # interest (e.g. "Great") gets a reply instead of silence. The agent itself
+    # still only starts for OWNER/MEMBER/COLLABORATOR (see run-agent guard).
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'issues' &&
+      !contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
+    permissions:
+      issues: write
+    steps:
+      - name: Post greeting
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LOGIN: ${{ github.event.issue.user.login }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE}/comments" -f body="Hi there, @${LOGIN}!
+
+          Thanks for opening an issue -- this repo is a live demo of **hermes-agent-batch**: an AI coding agent that picks up GitHub issues, does the work in a sandboxed Actions runner, and opens a PR back.
+
+          Your issue didn't start an agent run because, for safety, the agent only auto-starts for repo owners and collaborators (anyone on the internet could otherwise send it arbitrary tasks). A maintainer will still see this.
+
+          Want to watch the agent work end to end? Fork this repo, enable **Actions** on your fork, and open an issue there -- as the OWNER of your fork it kicks off immediately."
+
+  run-agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    if: >-
+      (
+        github.event_name == 'issues' &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
+      ) ||
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.comment.user.login != 'github-actions[bot]' &&
+        !startsWith(github.event.comment.body, '🤖 **Agent') &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+      )
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run agent
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
+          RUNNER: ${{ vars.AGENT_BATCH_RUNNER }}
+          MODEL: ${{ vars.AGENT_BATCH_MODEL }}
+          PROVIDER: ${{ vars.AGENT_BATCH_PROVIDER }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_BASE_URL: ${{ secrets.DEEPSEEK_BASE_URL }}
+          PM_PANEL_URL: ${{ secrets.PM_PANEL_URL }}
+        run: python3 lifecycle/agent.py
+        timeout-minutes: 140
