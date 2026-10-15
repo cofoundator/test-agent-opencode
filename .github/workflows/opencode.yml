@@ -20,27 +20,34 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Install opencode-worktree
+      - name: Install OpenCode
         run: |
-          curl -fsSL https://raw.githubusercontent.com/DanHenton/opencode-worktree/main/install.sh | sh
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+
+      - name: Auth OpenCode
+        run: |
+          mkdir -p ~/.local/share/opencode
+          echo '{"opencode":{"type":"api","key":"${{ secrets.OPENCODE_API_KEY }}"}}' > ~/.local/share/opencode/auth.json
+
+      - name: List models
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        run: opencode models
 
       - name: Configure Git
         run: |
           git config --global user.name "phaladamou"
           git config --global user.email "phaladrien@gmail.com"
 
-      - name: Run OpenCode in worktree
+      - name: Run OpenCode
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
           TASK="${COMMENT_BODY#/oc }"
-          opencode-worktree task agent-work "$TASK" --no-merge
+          opencode run --model "opencode/mimo-v2.6-flash-free" "$TASK"
 
-      - name: Merge worktree and push
+      - name: Push changes
         run: |
-          # Trouver le worktree créé
-          WORKTREE_PATH=$(opencode-worktree list | grep -o '/[^ ]*' | head -1)
-          cd "$WORKTREE_PATH"
-          opencode-worktree merge
           git push origin agent/work
