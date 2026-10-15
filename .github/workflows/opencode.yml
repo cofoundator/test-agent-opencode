@@ -20,15 +20,18 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install OpenCode
+        run: npm install -g opencode-ai
+
       - name: Configure Git
         run: |
           git config --global user.name "phaladamou"
           git config --global user.email "phaladrien@gmail.com"
-
-      - name: Install OpenCode
-        run: |
-          curl -fsSL https://opencode.ai/install | bash
-          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: Run OpenCode
         env:
